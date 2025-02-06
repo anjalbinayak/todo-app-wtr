@@ -1,12 +1,12 @@
 const CACHE_NAME = "to-do-pwa-cache-v1";
 const FILES_TO_CACHE = [
-  "/YOUR-REPOSITORY-NAME/",
-  "/YOUR-REPOSITORY-NAME /index.html",
-  "/YOUR-REPOSITORY-NAME /style.css",
-  "/YOUR-REPOSITORY-NAME /app.js",
-  "/YOUR-REPOSITORY-NAME /manifest.json",
-  "/YOUR-REPOSITORY-NAME /icons/icon-128.png",
-  "/YOUR-REPOSITORY-NAME /icons/icon-512.png",
+  "/todo-app-wtr/",
+  "/todo-app-wtr/index.html",
+  "/todo-app-wtr/style.css",
+  "/todo-app-wtr/app.js",
+  "/todo-app-wtr/manifest.json",
+  "/todo-app-wtr/icons/icon-128.png",
+  "/todo-app-wtr/icons/icon-512.png",
 ];
 self.addEventListener("install", (event) => {
   event.waitUntil(
