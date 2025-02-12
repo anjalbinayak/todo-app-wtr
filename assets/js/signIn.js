@@ -5,8 +5,6 @@ const provider = new GoogleAuthProvider();
 
 const signInBttn = document.getElementById("signIn");
 
-const signOutBttn = document.getElementById("signOut");
-
 const sw = new URL("service-worker.js", import.meta.url);
 
 if ("serviceWorker" in navigator) {
@@ -44,9 +42,4 @@ function signIn() {
 
 signInBttn.addEventListener("click", function (event) {
   signIn(auth, provider);
-});
-
-signOutBttn.addEventListener("click", function (event) {
-  localStorage.removeItem("email");
-  window.location.href = "index.html";
 });
