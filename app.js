@@ -8,6 +8,8 @@ import {
   collection,
 } from "firebase/firestore";
 
+import log from "loglevel";
+
 const firebaseConfig = {
   apiKey: "AIzaSyAtj2_7GgeY5ehrJO4L0B0zEX1cbdfcnDA",
   authDomain: "fanshawe-web-trends.firebaseapp.com",
@@ -44,16 +46,21 @@ if ("serviceWorker" in navigator) {
 
 // Add Task
 addTaskBtn.addEventListener("click", async () => {
-  const task = sanitizeInput(taskInput.value.trim());
-  if (task) {
-    const taskInput = document.getElementById("taskInput");
-    const taskText = taskInput.value.trim();
-    if (taskText) {
-      await addTaskToFirestore(taskText);
+  try {
+    const task = sanitizeInput(taskInput.value.trim());
+    if (task) {
+      const taskInput = document.getElementById("taskInput");
+      const taskText = taskInput.value.trim();
+      if (taskText) {
+        await addTaskToFirestore(taskText);
+        log.info(`Task added: ${task}`);
+        renderTasks();
+        taskInput.value = "";
+      }
       renderTasks();
-      taskInput.value = "";
     }
-    renderTasks();
+  } catch (error) {
+    log.error("Error adding task", error);
   }
 });
 
