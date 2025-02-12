@@ -68,12 +68,17 @@ addTaskBtn.addEventListener("click", async () => {
     if (task) {
       const taskInput = document.getElementById("taskInput");
       const taskText = taskInput.value.trim();
-      if (taskText) {
-        await addTaskToFirestore(taskText);
-        log.info(`Task added: ${task}`);
-        renderTasks();
-        taskInput.value = "";
+
+      if (!taskText) {
+        alert("Please enter a task");
+        return;
       }
+
+      await addTaskToFirestore(taskText);
+      log.info(`Task added: ${task}`);
+      renderTasks();
+      taskInput.value = "";
+
       renderTasks();
     }
   } catch (error) {
