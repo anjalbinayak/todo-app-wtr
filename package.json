@@ -4,11 +4,11 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build --dist-dir docs --public-url /CheckList/ index.html",
-    "dev:build": "parcel build --dist-dir dist --no-content-hash index.html",
+    "start": "parcel assets/html/*.html",
+    "build": "parcel build --dist-dir docs --public-url /CheckList/ assets/html/*.html",
+    "dev:build": "parcel build --dist-dir docs --no-content-hash assets/html/*.html",
     "dev:run": "npm run dev:build && npm run dev:start",
-    "dev:start": "parcel serve --dist-dir dist index.html",
+    "dev:start": "parcel serve --dist-dir docs assets/html/*.html",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -23,14 +23,13 @@
     "parcel": "latest"
   },
   "devDependencies": {
-    "@eslint/js": "^9.20.0",
     "@parcel/packager-raw-url": "^2.13.3",
     "@parcel/transformer-webmanifest": "^2.13.3",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
-    "eslint": "^9.20.1",
+    "eslint": "^9.18.0",
     "events": "^3.3.0",
     "globals": "^15.14.0",
     "https-browserify": "^1.0.0",
