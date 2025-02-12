@@ -29,7 +29,7 @@ if ("serviceWorker" in navigator) {
   s.register(sw.href, {
     scope: "/YOUR_REPOSITORY_NAME_HERE/",
   })
-    .then((_) =>
+    .then(() =>
       console.log(
         "Service Worker Registered for scope:",
         sw.href,
@@ -44,7 +44,7 @@ const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
 
-taskItem.tabIndex = 0;
+// taskItem.tabIndex = 0;
 
 taskInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
@@ -96,7 +96,7 @@ async function addTaskToFirestore(taskText) {
 async function renderTasks() {
   var tasks = await getTasksFromFirestore();
   taskList.innerHTML = "";
-  tasks.forEach((task, index) => {
+  tasks.forEach((task) => {
     if (!task.data().completed) {
       const taskItem = document.createElement("li");
       taskItem.id = task.id;
