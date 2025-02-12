@@ -23,10 +23,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const taskInput = document.getElementById("taskInput");
-const addTaskBtn = document.getElementById("addTaskBtn");
-const taskList = document.getElementById("taskList");
-
 const sw = new URL("service-worker.js", import.meta.url);
 if ("serviceWorker" in navigator) {
   const s = navigator.serviceWorker;
@@ -43,6 +39,27 @@ if ("serviceWorker" in navigator) {
     )
     .catch((err) => console.error("Service Worker Error:", err));
 }
+
+const taskInput = document.getElementById("taskInput");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskList = document.getElementById("taskList");
+
+taskItem.tabIndex = 0;
+
+taskInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    addTaskBtn.click();
+  }
+});
+
+taskList.addEventListener("keypress", async function (e) {
+  if (e.target.tagName === "LI" && e.key === "Enter") {
+    await updateDoc(doc(db, "todos", e.target.id), {
+      completed: true,
+    });
+  }
+  renderTasks();
+});
 
 // Add Task
 addTaskBtn.addEventListener("click", async () => {
