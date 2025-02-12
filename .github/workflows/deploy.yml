@@ -15,6 +15,10 @@ jobs:
           if [ -f package.json ]; then
               npm install
           fi
+
+      - name: Run linting
+        run: npm run lint
+
       - name: Build Project (if any build step exists)
         run: |
           if [ -f package.json ]; then
