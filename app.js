@@ -1,3 +1,4 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { initializeApp } from "firebase/app";
 import {
   doc,
@@ -22,6 +23,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+//Call in the event listener for page load
+async function getApiKey() {
+  let snapshot = await getDoc(doc(db, "apikey", "googlegenai"));
+  apiKey = snapshot.data().key;
+  genAI = new GoogleGenerativeAI(apiKey);
+  model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+}
+
+async function askChatBot(request) {
+  return await model.generateContent(request);
+}
 
 const sw = new URL("service-worker.js", import.meta.url);
 if ("serviceWorker" in navigator) {
@@ -126,6 +139,65 @@ taskList.addEventListener("click", (e) => {
     e.target.remove();
   }
 });
+
+function ruleChatBot(request) {
+  if (request.startsWith("add task")) {
+    let task = request.replace("add task", "").trim();
+    if (task) {
+      addTask(task);
+      appendMessage("Task " + task + " added!");
+    } else {
+      appendMessage("Please specify a task to add.");
+    }
+    return true;
+  } else if (request.startsWith("complete")) {
+    let taskName = request.replace("complete", "").trim();
+    if (taskName) {
+      if (removeFromTaskName(taskName)) {
+        appendMessage("Task " + taskName + " marked as complete.");
+      } else {
+        appendMessage("Task not found!");
+      }
+    } else {
+      appendMessage("Please specify a task to complete.");
+    }
+    return true;
+  }
+
+  return false;
+}
+
+const aiButton = document.getElementById("send-btn");
+aiButton.addEventListener("click", async () => {
+  let prompt = aiInput.value.trim().toLowerCase();
+  if (prompt) {
+    if (!ruleChatBot(prompt)) {
+      askChatBot(prompt);
+    }
+  } else {
+    appendMessage("Please enter a prompt");
+  }
+});
+
+function appendMessage(message) {
+  let history = document.createElement("div");
+  history.textContent = message;
+  history.className = "history";
+  chatHistory.appendChild(history);
+  aiInput.value = "";
+}
+
+function removeFromTaskName(task) {
+  let ele = document.getElementsByName(task);
+  if (ele.length == 0) {
+    return false;
+  }
+  ele.forEach((e) => {
+    removeTask(e.id);
+    removeVisualTask(e.id);
+  });
+  return true;
+}
 
 window.addEventListener("error", function (event) {
   console.error("Error occurred: ", event.message);
